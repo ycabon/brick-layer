@@ -1,0 +1,19 @@
+{
+  "name": "lego-layer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ycabon/lego-layer.git"
+  },
+  "author": "Yann Cabon",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ycabon/lego-layer/issues"
+  },
+  "homepage": "https://github.com/ycabon/lego-layer#readme"
+}
