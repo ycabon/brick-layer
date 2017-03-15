@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>getTileUrl 2D</title>
+  <title>BrickLayer</title>
   <link rel="stylesheet" href="https://jsdev.arcgis.com/4.4/esri/css/main.css">
 
   <style>
@@ -18,9 +18,10 @@
   </style>
 
   <script>
+    var locationPath = window.location.href.replace(/\/[^/]+$/, "/")
     var dojoConfig = {
       paths: {
-        layers: window.location.href.replace(/\/[^/]+$/, "/src/layers")
+        layers: locationPath + "src/layers"
       }
     };
   </script>
@@ -47,20 +48,24 @@
       "esri/Map",
       "esri/views/MapView",
       "esri/layers/TileLayer",
-      "layers/LegoLayer"
+      "layers/BrickLayer"
     ],
     function(
       Map,
       MapView,
       TileLayer,
-      LegoLayer
+      BrickLayer
     ) {
       
       map = new Map({
         basemap: "topo",
         layers: [
-          new LegoLayer({
+          new BrickLayer({
             layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer")
+            //layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer")
+            //layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer")
+            //layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer"),
+            //layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer")
           })
         ]
       });
