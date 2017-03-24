@@ -54,14 +54,15 @@
 
       "esri/widgets/LayerList",
 
-      "layers/BrickLayer"
+      "layers/BrickLayer",
+      "layers/palette"
     ],
     function(
       Map,
       MapView,
       GroupLayer, TileLayer,
       LayerList,
-      BrickLayer
+      BrickLayer, palette
     ) {
       
       map = new Map({
@@ -78,10 +79,16 @@
                 }
               }),
               new BrickLayer({
-                layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer")
+                layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"),
+                filter: {
+                  saturate: 3
+                }
               }),
               new BrickLayer({
                 layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer"),
+                brickSize: 32,
+                palette: palette,
+                brickStyle: "lego",
                 filter: {
                   saturate: 2
                 }

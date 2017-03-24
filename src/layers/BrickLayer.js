@@ -12,6 +12,11 @@ function(
   colorUtils
 ) {
 
+  var brickStylePaths = {
+    default: "./bricktop.png",
+    lego: "./LegoStud.png"
+  }
+
   var BrickLayer = BaseTileLayer.createSubclass({
     declaredClass: "BrickLayer",
 
@@ -52,20 +57,30 @@ function(
 
       fullExtent: {
         aliasOf: "layer.fullExtent"
-      }
+      },
+
+      brickStyle: "default"
     },
 
     load: function() {
       this.addResolvingPromise(this.layer.load());
-      this.addResolvingPromise(
-        esriRequest(require.toUrl("./bricktop.png"), {
-          responseType: "image",
-          allowImageDataAccess: true
-        })
-        .then(function(response) {
-          this._bricktop = response.data;
-        }.bind(this))
-      );
+
+      var brickPath = brickStylePaths[this.brickStyle] && require.toUrl(brickStylePaths[this.brickStyle]) || this.brickStyle;
+
+      if (brickPath) {
+        this.addResolvingPromise(
+          esriRequest(brickPath, {
+            responseType: "image",
+            allowImageDataAccess: true
+          })
+          .then(function(response) {
+            this._brickTop = response.data;
+          }.bind(this))
+          .otherwise(function() {
+            this._brickTop = null;
+          }.bind(this))
+        );
+      }
     },
 
     fetchTile: function(level, row, col) {
@@ -100,12 +115,13 @@ function(
             var color = colorUtils.sampleAverageColor([0, 0, 0], imageData, c * brickSize, r * brickSize, brickSize, brickSize);
             
             colorUtils.rgb2hsl(color, color);
-            // if (this.hslPalette) {
-            //   colorUtils.colorToPalette(color, color, this.hslPalette);
-            // }
-
+            
             if (saturate) {
               color[1] *= saturate;
+            }
+
+            if (this.hslPalette) {
+              colorUtils.colorToPalette(color, color, this.hslPalette);
             }
 
             if (darken) {
@@ -120,8 +136,10 @@ function(
             // Draw the color
             context.fillRect(c * brickSize, r * brickSize, brickSize, brickSize);
 
-            // Draw the top
-            context.drawImage(this._bricktop, c * brickSize + 0.5, r * brickSize + 0.5, brickSize - 0.5, brickSize - 0.5);
+            if (this._brickTop) {
+              // Draw the top
+              context.drawImage(this._brickTop, c * brickSize + 0.5, r * brickSize + 0.5, brickSize - 0.5, brickSize - 0.5);
+            }
           }
         }
 
