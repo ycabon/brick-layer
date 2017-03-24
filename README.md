@@ -6,3 +6,10 @@ https://adventuresinmapping.github.io/lego-map/
 
 [![pixelated imagery](images/screenshot.png)](https://ycabon.github.io/brick-layer/)
 [Live](https://ycabon.github.io/brick-layer/)
+
+### Point binning
+
+Another example using canvas to bin points. Here 500,000 US restaurants.
+
+[![pixelated imagery](images/dyi-point-binning.png)](https://ycabon.github.io/brick-layer/binning.html)
+[Live](https://ycabon.github.io/brick-layer/binning.html)
