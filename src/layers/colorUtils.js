@@ -68,9 +68,25 @@ define([
     return out;
   }
 
+  function contrast(out, rgb, contrast) {
+    http://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/
+
+    var factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+    out[0] = clamp(factor * (rgb[0] - 128) + 128, 0, 255);
+    out[1] = clamp(factor * (rgb[1] - 128) + 128, 0, 255);
+    out[2] = clamp(factor * (rgb[2] - 128) + 128, 0, 255);
+    
+    return out;
+  }
+
+  function clamp(value, min, max) {
+    return value < min ? min : value > max ? max : value;
+  }
+
   return {
     rgb2hsl: rgb2hsl,
-    colorToPalette: colorToPalette
+    colorToPalette: colorToPalette,
+    contrast: contrast
   };
 
 })

@@ -67,29 +67,35 @@
       map = new Map({
         layers: [
           new GroupLayer({
+            title: "Layers",
             visibilityMode: "exclusive",
             layers: [
               new BrickLayer({
                 layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"),
-                brickSize: 8
+                filter: {
+                  darken: 0.25,
+                  saturate: 2
+                }
               }),
               new BrickLayer({
-                layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer"),
-                brickSize: 8
+                layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer")
               }),
               new BrickLayer({
                 layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer"),
-                brickSize: 8
+                filter: {
+                  saturate: 2
+                }
               }),
               new BrickLayer({
-                layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"),
-                brickSize: 8
+                layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer")
               }),
               new BrickLayer({
                 layer: new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"),
-                brickSize: 8
-              }),
-              new TileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer")
+                brickSize: 32,
+                filter: {
+                  saturate: 3
+                }
+              })
             ]
           })
         ]
@@ -99,8 +105,9 @@
         container: "viewDiv",
         map: map,
         center: [-100, 40],
-        zoom: 3,
+        scale: 50000000,
         constraints: {
+          minScale: 50000000,
           snapToZoom: false
         }
       });

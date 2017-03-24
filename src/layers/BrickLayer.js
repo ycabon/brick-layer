@@ -36,10 +36,22 @@ function(
         }
       },
 
-      filter: "",
+      filter: null,
 
       title: {
         aliasOf: "layer.title"
+      },
+
+      attributionDataUrl: {
+        aliasOf: "layer.attributionDataUrl"
+      },
+
+      tileInfo: {
+        aliasOf: "layer.tileInfo"
+      },
+
+      fullExtent: {
+        aliasOf: "layer.fullExtent"
       }
     },
 
@@ -69,6 +81,10 @@ function(
         var height = this.tileInfo.size[0];
         var canvas = document.createElement("canvas");
         var context = canvas.getContext("2d");
+        var filter = this.filter;
+        var saturate = filter && filter.saturate;
+        var darken = filter && filter.darken;
+        var lighten = filter && filter.lighten;
 
         canvas.width = width;
         canvas.height = height;
@@ -87,12 +103,19 @@ function(
             // if (this.hslPalette) {
             //   colorUtils.colorToPalette(color, color, this.hslPalette);
             // }
-            context.fillStyle = "hsl(" + color[0] + "," + color[1] + "%," + color[2] + "%)";
-            // context.fillStyle = "rgb(" + color[0] + "," + color[1] + "," + color[2] + ")";
 
-            // if (this.filter) {
-            //   context.filter = this.filter;
-            // }
+            if (saturate) {
+              color[1] *= saturate;
+            }
+
+            if (darken) {
+              color[2] -= color[2] * darken;
+            }
+            else if (lighten) {
+              color[2] *= lighten;
+            }
+
+            context.fillStyle = "hsl(" + color[0] + "," + color[1] + "%," + color[2] + "%)";
 
             // Draw the color
             context.fillRect(c * brickSize, r * brickSize, brickSize, brickSize);
