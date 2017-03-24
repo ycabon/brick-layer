@@ -97,7 +97,7 @@ function(
 
         for (var r = 0; r < numBlocks; r++) {
           for (var c = 0; c < numBlocks; c++) {
-            var color = this.sampleAverageColor([0, 0, 0], imageData, c * brickSize, r * brickSize, brickSize, brickSize);
+            var color = colorUtils.sampleAverageColor([0, 0, 0], imageData, c * brickSize, r * brickSize, brickSize, brickSize);
             
             colorUtils.rgb2hsl(color, color);
             // if (this.hslPalette) {
@@ -127,40 +127,6 @@ function(
 
         return canvas;
       }.bind(this));
-    },
-
-    sampleAverageColor: function(out, imageData, x, y, width, height, options) {
-      out[0] = 0;
-      out[1] = 0;
-      out[2] = 0;
-
-      var numSamples = 0;
-
-      // Sample every 5 pixel
-      var sampleStride = options && options.sampleStride || 5;
-
-      var data = imageData.data;
-      var w = imageData.width;
-
-      for (var j = y; j < y + height; j += sampleStride) {
-        for (var i = x; i < x + width; i += sampleStride) {
-          // imageData is a flat array of 4 color components
-          // calculate the absolute position in the buffer.
-          var p = (j * w + i) * 4;
-          
-          out[0] += data[p];
-          out[1] += data[p + 1];
-          out[2] += data[p + 2];
-
-          numSamples++;
-        }
-      }
-
-      out[0] = Math.floor(out[0] / numSamples);
-      out[1] = Math.floor(out[1] / numSamples);
-      out[2] = Math.floor(out[2] / numSamples);
-
-      return out;
     }
 
 

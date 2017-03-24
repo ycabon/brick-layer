@@ -1,6 +1,50 @@
 define([
-  "dojox/color"
 ], function() {
+
+  /**
+   * Sample the average color in a imageData
+   * 
+   * @param {vec3} out output vector containing the sampled color
+   * @param {ImageData} imageData input ImageData data to sample from
+   * @param {*} x coordinate of the area from imageData to sample from
+   * @param {*} y coordinate of the area from imageData to sample from
+   * @param {*} width size of the area from imageData to sample from
+   * @param {*} height size of the area from imageData to sample from
+   */
+  function sampleAverageColor(out, imageData, x, y, width, height) {
+    out[0] = 0;
+    out[1] = 0;
+    out[2] = 0;
+
+    var numSamples = 0;
+
+    // Sample every 5 pixel
+    var sampleStride = 5;
+
+    var data = imageData.data;
+    var w = imageData.width;
+
+    for (var j = y; j < y + height; j += sampleStride) {
+      for (var i = x; i < x + width; i += sampleStride) {
+        // imageData is a flat array of 4 color components
+        // calculate the absolute position in the buffer.
+        var p = (j * w + i) * 4;
+        
+        out[0] += data[p];
+        out[1] += data[p + 1];
+        out[2] += data[p + 2];
+
+        numSamples++;
+      }
+    }
+
+    out[0] = Math.floor(out[0] / numSamples);
+    out[1] = Math.floor(out[1] / numSamples);
+    out[2] = Math.floor(out[2] / numSamples);
+
+    return out;
+  }
+
   /**
    * Snap a rgb color to a palette
    */
@@ -84,9 +128,10 @@ define([
   }
 
   return {
-    rgb2hsl: rgb2hsl,
     colorToPalette: colorToPalette,
-    contrast: contrast
+    contrast: contrast,
+    rgb2hsl: rgb2hsl,
+    sampleAverageColor: sampleAverageColor
   };
 
 })
