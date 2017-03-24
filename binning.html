@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Point Binning</title>
+  <link rel="stylesheet" href="https://jsdev.arcgis.com/4.4/esri/css/main.css">
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    var locationPath = window.location.href.replace(/\/[^/]+$/, "/")
+    var dojoConfig = {
+      paths: {
+        layers: locationPath + "src/layers"
+      }
+    };
+  </script>
+  <script src="https://jsdev.arcgis.com/4.4/"></script>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+
+  <script>
+    require([
+      "esri/Map",
+
+      "esri/views/MapView",
+
+      "esri/layers/FeatureLayer",
+
+      "esri/widgets/LayerList",
+
+      "layers/PointBinLayer",
+      "layers/palette"
+    ],
+    function(
+      Map,
+      MapView,
+      FeatureLayer,
+      LayerList,
+      PointBinLayer, palette
+    ) {
+      
+      map = new Map({
+        basemap: "dark-gray",
+        layers: [
+          new PointBinLayer({
+            layer: new FeatureLayer("http://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/Restaurants/FeatureServer/0")
+          })
+        ]
+      });
+
+      view = new MapView({
+        container: "viewDiv",
+        map: map,
+        center: [-100, 40],
+        zoom: 5,
+        constraints: {
+          minZoom: 5,
+          snapToZoom: false
+        }
+      });
+
+      view.ui.add(new LayerList({ view: view }), "top-right");
+
+    });
+  </script>
+</body>
+
+</html>
