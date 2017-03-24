@@ -58,7 +58,7 @@ function(
     load: function() {
       this.addResolvingPromise(this.layer.load());
       this.addResolvingPromise(
-        esriRequest(require.toUrl("./legotop.png"), {
+        esriRequest(require.toUrl("./bricktop.png"), {
           responseType: "image",
           allowImageDataAccess: true
         })
